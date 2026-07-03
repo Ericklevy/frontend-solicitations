@@ -103,7 +103,7 @@
                                     'bg-primary-container/20 text-primary-container border-primary-container/30': s?.status === 'SUBMITTED' || s?.status === 'IN_REVIEW',
                                     'bg-surface-variant/20 text-on-surface-variant border-outline-variant/30': !s?.status || s?.status === 'DRAFT'
                               }">
-                            {{ s?.status || 'DRAFT' }}
+                            {{ getStatusLabel(s?.status) }}
                         </span>
                         <span class="font-label-sm text-label-sm text-on-surface-variant">{{ s?.preferredDate || 'Data Indefinida' }}</span>
                     </div>
@@ -148,7 +148,7 @@
                            'text-primary bg-primary-container/10 border-primary/20': selectedSolicitation.status === 'SUBMITTED' || selectedSolicitation.status === 'IN_REVIEW',
                            'text-on-surface-variant bg-surface-variant/10 border-outline-variant/20': !selectedSolicitation.status || selectedSolicitation.status === 'DRAFT'
                        }">
-                        {{ selectedSolicitation.status || 'DRAFT' }}
+                        {{ getStatusLabel(selectedSolicitation.status) }}
                     </p>
                 </div>
             </div>

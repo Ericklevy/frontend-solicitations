@@ -20,12 +20,24 @@ export class ClientDashboardComponent implements OnInit {
   filteredSolicitations: Solicitation[] = [];
   isLoading = false;
   currentFilter: 'ALL' | 'IN_REVIEW' | 'APPROVED' = 'ALL';
-  searchQuery = '';
+  searchQuery: string = '';
   selectedSolicitation: Solicitation | null = null;
 
   private solicitationService = inject(SolicitationService);
   private authService = inject(AuthService);
   private router = inject(Router);
+
+  getStatusLabel(status: string | undefined): string {
+    if (!status) return 'RASCUNHO';
+    const map: Record<string, string> = {
+      'DRAFT': 'RASCUNHO',
+      'SUBMITTED': 'ENVIADO',
+      'IN_REVIEW': 'EM ANÁLISE',
+      'APPROVED': 'APROVADO',
+      'REJECTED': 'REJEITADO'
+    };
+    return map[status] || status;
+  }
 
   ngOnInit() {
     this.loadSolicitations();
