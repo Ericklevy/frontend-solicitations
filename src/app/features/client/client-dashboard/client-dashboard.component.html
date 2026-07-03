@@ -62,6 +62,12 @@
             </a>
         </div>
     
+        <!-- DEBUG RAW JSON -->
+        <div class="mb-4 p-4 bg-black text-green-400 font-mono text-xs overflow-auto max-h-64 rounded-xl border border-green-900">
+            <p class="font-bold text-white mb-2">DEBUG INFO (Por favor, tire print dessa caixa):</p>
+            {{ solicitations | json }}
+        </div>
+        
         <!-- Quick Filters -->
         <div class="flex overflow-x-auto pb-4 mb-stack-lg gap-3 scrollbar-hide">
             <button (click)="setFilter('ALL')" [ngClass]="currentFilter === 'ALL' ? 'border-primary/50 text-primary' : 'text-on-surface-variant hover:text-on-surface border-transparent'" class="px-5 py-2 rounded-full glass-panel text-on-surface font-label-md text-label-md border whitespace-nowrap transition-colors">Todas</button>
@@ -80,35 +86,37 @@
 
         <!-- Bento Grid / Cards -->
         <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div *ngFor="let s of filteredSolicitations" class="glass-panel rounded-xl p-6 flex flex-col relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
-                <div class="absolute top-0 left-0 w-1/2 h-1 bg-gradient-to-r opacity-50"
-                     [ngClass]="{
-                         'from-tertiary-container': s.status === 'APPROVED',
-                         'from-error-container': s.status === 'REJECTED',
-                         'from-primary-container': s.status === 'SUBMITTED' || s.status === 'IN_REVIEW',
-                         'from-surface-variant': s.status === 'DRAFT'
-                     }"></div>
-                <div class="flex justify-between items-start mb-4">
-                    <span class="font-label-sm text-label-sm px-3 py-1 rounded-full border"
-                          [ngClass]="{
-                                'bg-tertiary-container/20 text-tertiary border-tertiary-container/30': s.status === 'APPROVED',
-                                'bg-error-container/20 text-error border-error-container/30': s.status === 'REJECTED',
-                                'bg-primary-container/20 text-primary-container border-primary-container/30': s.status === 'SUBMITTED' || s.status === 'IN_REVIEW',
-                                'bg-surface-variant/20 text-on-surface-variant border-outline-variant/30': !s.status || s.status === 'DRAFT'
-                          }">
-                        {{ s.status || 'DRAFT' }}
-                    </span>
-                    <span class="font-label-sm text-label-sm text-on-surface-variant">{{ s.preferredDate || 'Data Indefinida' }}</span>
+            <ng-container *ngFor="let s of filteredSolicitations">
+                <div *ngIf="s" class="glass-panel rounded-xl p-6 flex flex-col relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                    <div class="absolute top-0 left-0 w-1/2 h-1 bg-gradient-to-r opacity-50"
+                         [ngClass]="{
+                             'from-tertiary-container': s?.status === 'APPROVED',
+                             'from-error-container': s?.status === 'REJECTED',
+                             'from-primary-container': s?.status === 'SUBMITTED' || s?.status === 'IN_REVIEW',
+                             'from-surface-variant': !s?.status || s?.status === 'DRAFT'
+                         }"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="font-label-sm text-label-sm px-3 py-1 rounded-full border"
+                              [ngClass]="{
+                                    'bg-tertiary-container/20 text-tertiary border-tertiary-container/30': s?.status === 'APPROVED',
+                                    'bg-error-container/20 text-error border-error-container/30': s?.status === 'REJECTED',
+                                    'bg-primary-container/20 text-primary-container border-primary-container/30': s?.status === 'SUBMITTED' || s?.status === 'IN_REVIEW',
+                                    'bg-surface-variant/20 text-on-surface-variant border-outline-variant/30': !s?.status || s?.status === 'DRAFT'
+                              }">
+                            {{ s?.status || 'DRAFT' }}
+                        </span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">{{ s?.preferredDate || 'Data Indefinida' }}</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-1">{{ s?.title || s?.serviceType || 'Serviço em Rascunho' }}</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant mb-6 truncate">{{ s?.description || 'Sem descrição.' }}</p>
+                    <div class="mt-auto flex justify-between items-center border-t border-white/5 pt-4">
+                        <span class="font-label-sm text-label-sm text-outline font-mono" *ngIf="s?.id">ID: LX-{{ (s.id + '').substring(0, 4) }}</span>
+                        <button (click)="openDetails(s)" class="text-primary hover:text-primary-fixed-dim font-label-md text-label-md flex items-center gap-1 transition-colors">
+                            Ver Detalhes <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </button>
+                    </div>
                 </div>
-                <h3 class="font-headline-md text-headline-md text-on-surface mb-1">{{ s.title || s.serviceType || 'Serviço em Rascunho' }}</h3>
-                <p class="font-body-md text-body-md text-on-surface-variant mb-6 truncate">{{ s.description || 'Sem descrição.' }}</p>
-                <div class="mt-auto flex justify-between items-center border-t border-white/5 pt-4">
-                    <span class="font-label-sm text-label-sm text-outline font-mono" *ngIf="s.id">ID: LX-{{ (s.id + '').substring(0, 4) }}</span>
-                    <button (click)="openDetails(s)" class="text-primary hover:text-primary-fixed-dim font-label-md text-label-md flex items-center gap-1 transition-colors">
-                        Ver Detalhes <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                    </button>
-                </div>
-            </div>
+            </ng-container>
         </div>
     </main>
 </div>
