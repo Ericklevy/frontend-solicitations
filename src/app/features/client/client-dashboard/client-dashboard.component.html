@@ -94,16 +94,16 @@
                                 'bg-tertiary-container/20 text-tertiary border-tertiary-container/30': s.status === 'APPROVED',
                                 'bg-error-container/20 text-error border-error-container/30': s.status === 'REJECTED',
                                 'bg-primary-container/20 text-primary-container border-primary-container/30': s.status === 'SUBMITTED' || s.status === 'IN_REVIEW',
-                                'bg-surface-variant/20 text-on-surface-variant border-outline-variant/30': s.status === 'DRAFT'
+                                'bg-surface-variant/20 text-on-surface-variant border-outline-variant/30': !s.status || s.status === 'DRAFT'
                           }">
-                        {{ s.status }}
+                        {{ s.status || 'DRAFT' }}
                     </span>
                     <span class="font-label-sm text-label-sm text-on-surface-variant">{{ s.preferredDate || 'Data Indefinida' }}</span>
                 </div>
                 <h3 class="font-headline-md text-headline-md text-on-surface mb-1">{{ s.title || s.serviceType || 'Serviço em Rascunho' }}</h3>
                 <p class="font-body-md text-body-md text-on-surface-variant mb-6 truncate">{{ s.description || 'Sem descrição.' }}</p>
                 <div class="mt-auto flex justify-between items-center border-t border-white/5 pt-4">
-                    <span class="font-label-sm text-label-sm text-outline font-mono" *ngIf="s.id">ID: LX-{{ s.id.substring(0, 4) }}</span>
+                    <span class="font-label-sm text-label-sm text-outline font-mono" *ngIf="s.id">ID: LX-{{ (s.id + '').substring(0, 4) }}</span>
                     <button (click)="openDetails(s)" class="text-primary hover:text-primary-fixed-dim font-label-md text-label-md flex items-center gap-1 transition-colors">
                         Ver Detalhes <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
@@ -129,7 +129,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Serviço</p>
-                    <p class="font-body-md text-body-md text-on-surface bg-surface-container-low p-3 rounded-md border border-outline-variant/10">{{ selectedSolicitation.title || selectedSolicitation.serviceType }}</p>
+                    <p class="font-body-md text-body-md text-on-surface bg-surface-container-low p-3 rounded-md border border-outline-variant/10">{{ selectedSolicitation.title || selectedSolicitation.serviceType || 'Serviço em Rascunho' }}</p>
                 </div>
                 <div>
                     <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Status</p>
@@ -138,9 +138,9 @@
                            'text-tertiary bg-tertiary-container/10 border-tertiary/20': selectedSolicitation.status === 'APPROVED',
                            'text-error bg-error-container/10 border-error/20': selectedSolicitation.status === 'REJECTED',
                            'text-primary bg-primary-container/10 border-primary/20': selectedSolicitation.status === 'SUBMITTED' || selectedSolicitation.status === 'IN_REVIEW',
-                           'text-on-surface-variant bg-surface-variant/10 border-outline-variant/20': selectedSolicitation.status === 'DRAFT'
+                           'text-on-surface-variant bg-surface-variant/10 border-outline-variant/20': !selectedSolicitation.status || selectedSolicitation.status === 'DRAFT'
                        }">
-                        {{ selectedSolicitation.status }}
+                        {{ selectedSolicitation.status || 'DRAFT' }}
                     </p>
                 </div>
             </div>

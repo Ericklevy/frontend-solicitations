@@ -47,16 +47,16 @@
             <p class="font-body-lg text-body-lg text-on-surface-variant">Edite seus dados pessoais e preferências.</p>
         </div>
         <div class="glass-card rounded-xl p-6 ambient-glow max-w-xl">
-        <div class="space-y-4">
+        <div class="space-y-4" *ngIf="currentUser">
             <div>
                 <label class="block text-sm text-on-surface-variant mb-1">Nome Completo</label>
-                <input type="text" value="Luxe Client" class="w-full bg-surface-container p-3 rounded-lg text-on-surface border border-outline-variant/30" readonly>
+                <input type="text" [value]="currentUser.name" class="w-full bg-surface-container p-3 rounded-lg text-on-surface border border-outline-variant/30 font-bold" readonly>
             </div>
             <div>
                 <label class="block text-sm text-on-surface-variant mb-1">E-mail</label>
-                <input type="text" value="client@luxe.com" class="w-full bg-surface-container p-3 rounded-lg text-on-surface border border-outline-variant/30" readonly>
+                <input type="text" [value]="currentUser.email" class="w-full bg-surface-container p-3 rounded-lg text-on-surface border border-outline-variant/30 font-bold" readonly>
             </div>
-            <button class="primary-gradient-btn px-6 py-2 rounded-lg text-white font-bold mt-4">Editar</button>
+            <button class="primary-gradient-btn px-6 py-2 rounded-lg text-white font-bold mt-4 shadow-lg shadow-primary/20">Editar</button>
         </div>
     </div>
     </div>
