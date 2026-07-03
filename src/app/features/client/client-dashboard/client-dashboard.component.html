@@ -62,12 +62,6 @@
             </a>
         </div>
     
-        <!-- DEBUG RAW JSON -->
-        <div class="mb-4 p-4 bg-black text-green-400 font-mono text-xs overflow-auto max-h-64 rounded-xl border border-green-900">
-            <p class="font-bold text-white mb-2">DEBUG INFO (Por favor, tire print dessa caixa):</p>
-            {{ solicitations | json }}
-        </div>
-        
         <!-- Quick Filters -->
         <div class="flex overflow-x-auto pb-4 mb-stack-lg gap-3 scrollbar-hide">
             <button (click)="setFilter('ALL')" [ngClass]="currentFilter === 'ALL' ? 'border-primary/50 text-primary' : 'text-on-surface-variant hover:text-on-surface border-transparent'" class="px-5 py-2 rounded-full glass-panel text-on-surface font-label-md text-label-md border whitespace-nowrap transition-colors">Todas</button>

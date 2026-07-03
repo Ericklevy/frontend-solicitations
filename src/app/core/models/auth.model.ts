@@ -12,6 +12,7 @@ export interface RegisterRequest {
 export interface AuthResponse {
   token: string;
   type?: string;
+  name?: string;
   email?: string;
   role: 'CLIENT' | 'ANALYST' | 'ADMIN';
 }

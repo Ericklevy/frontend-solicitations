@@ -32,6 +32,12 @@ export class AuthService {
     if (res.role) {
       localStorage.setItem('role', res.role);
     }
+    if (res.name) {
+      localStorage.setItem('name', res.name);
+    }
+    if (res.email) {
+      localStorage.setItem('email', res.email);
+    }
   }
 
   getToken(): string | null {
@@ -41,6 +47,8 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('name');
+    localStorage.removeItem('email');
   }
 
   isAuthenticated(): boolean {

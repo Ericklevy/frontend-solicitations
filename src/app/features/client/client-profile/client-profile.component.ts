@@ -16,17 +16,9 @@ export class ClientProfileComponent implements OnInit {
   private authService = inject(AuthService);
 
   ngOnInit() {
-    const token = this.authService.getToken();
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        this.currentUser = {
-          name: 'Cliente',
-          email: payload.sub || payload.email || 'client@luxe.com'
-        };
-      } catch (e) {
-        this.currentUser = { name: 'Cliente', email: 'client@luxe.com' };
-      }
-    }
+    this.currentUser = {
+      name: localStorage.getItem('name') || 'Luxe Client',
+      email: localStorage.getItem('email') || 'client@luxe.com'
+    };
   }
 }
