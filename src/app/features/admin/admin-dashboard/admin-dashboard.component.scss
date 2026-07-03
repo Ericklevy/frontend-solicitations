@@ -1,0 +1,43 @@
+.glass-card {
+    background: rgba(45, 52, 73, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(184, 195, 255, 0.1);
+    border-top: 1px solid rgba(184, 195, 255, 0.2);
+    border-left: 1px solid rgba(184, 195, 255, 0.2);
+}
+
+.neumorphic-inset {
+    background: rgba(23, 31, 51, 1);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5),
+                inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+}
+
+.ambient-glow {
+    box-shadow: 0 0 30px rgba(184, 195, 255, 0.15);
+}
+
+.primary-gradient-btn {
+    background: linear-gradient(135deg, #b8c3ff 0%, #d0bcff 100%);
+    transition: all 0.3s ease;
+}
+.primary-gradient-btn:hover {
+    box-shadow: 0 0 20px rgba(184, 195, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Custom Scrollbar for the table container */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(11, 19, 38, 0.5); 
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(67, 70, 86, 0.8); 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(142, 144, 162, 0.8); 
+}

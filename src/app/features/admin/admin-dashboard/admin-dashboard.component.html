@@ -1,0 +1,192 @@
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 border-r border-outline-variant dark:border-outline-variant backdrop-blur-xl bg-surface-container dark:bg-surface-container shadow-md z-50 py-base">
+    <div class="px-6 mb-8 mt-8 flex flex-col items-center justify-center w-full text-center border-b border-outline-variant/30 pb-6">
+        <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-tight">LuxeService</h1>
+        <p class="text-[10px] text-on-surface-variant uppercase tracking-[0.2em] mt-1 font-bold">Portal Administrativo</p>
+    </div>
+    
+    <div class="flex-1 px-3 space-y-1 mt-4">
+        <a routerLink="/admin/painel" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" [routerLinkActiveOptions]="{exact: true}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-bold hover:bg-surface-variant/50 transition-colors cursor-pointer font-body-md text-body-md">
+            <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            <span>Painel</span>
+        </a>
+        <a routerLink="/admin/equipe" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-bold hover:bg-surface-variant/50 transition-colors cursor-pointer font-body-md text-body-md">
+            <span class="material-symbols-outlined" data-icon="groups">groups</span>
+            <span>Equipe</span>
+        </a>
+        <a routerLink="/admin/relatorios" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-bold hover:bg-surface-variant/50 transition-colors cursor-pointer font-body-md text-body-md">
+            <span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+            <span>Relatórios</span>
+        </a>
+        <a routerLink="/admin/servicos" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-bold hover:bg-surface-variant/50 transition-colors cursor-pointer font-body-md text-body-md">
+            <span class="material-symbols-outlined" data-icon="design_services">design_services</span>
+            <span>Serviços</span>
+        </a>
+        <a routerLink="/admin/configuracoes" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-bold hover:bg-surface-variant/50 transition-colors cursor-pointer font-body-md text-body-md">
+            <span class="material-symbols-outlined" data-icon="settings">settings</span>
+            <span>Configurações</span>
+        </a>
+    </div>
+    
+    <div class="px-3 mt-auto space-y-4">
+        <div class="space-y-1 pt-4 border-t border-outline-variant/30">
+            <a routerLink="/admin/suporte" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" class="cursor-pointer flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-colors font-body-md text-body-md">
+                <span class="material-symbols-outlined" data-icon="help">help</span>
+                <span>Suporte</span>
+            </a>
+            <a href="/auth" class="cursor-pointer flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-colors font-body-md text-body-md mt-1">
+                <span class="material-symbols-outlined" data-icon="logout">logout</span>
+                <span>Sair</span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<header class="hidden md:flex fixed top-0 right-0 left-64 h-16 justify-between items-center px-margin-desktop z-40 bg-background/80 dark:bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 transition-all font-label-md text-label-md text-primary dark:text-primary">
+    <div class="flex items-center gap-4">
+        <div class="relative focus-within:ring-2 focus-within:ring-primary rounded-full transition-all">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+            <input class="pl-10 pr-4 py-2 bg-surface-container-high border-none rounded-full text-on-surface placeholder:text-on-surface-variant focus:outline-none w-64 text-sm neumorphic-inset transition-all outline-none" placeholder="Buscar..." type="text"/>
+        </div>
+    </div>
+    <div class="font-headline-sm text-headline-sm font-black text-on-surface dark:text-on-surface absolute left-1/2 -translate-x-1/2">
+        LuxeService Admin
+    </div>
+    <div class="flex items-center gap-4">
+        <button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all">
+            <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+        </button>
+    </div>
+</header>
+\n<main class="md:pl-64 pt-16 min-h-screen">
+    <div class="max-w-[1280px] mx-auto p-margin-mobile md:p-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+        
+        <!-- Left Column: Analysts Table -->
+        <div class="lg:col-span-8 flex flex-col gap-stack-md">
+            <div class="mb-stack-sm">
+                <h2 class="font-headline-lg text-headline-lg md:text-headline-lg text-on-surface mb-2">Gestão de Equipe</h2>
+                <p class="font-body-lg text-body-lg text-on-surface-variant">Gerencie os analistas e suas áreas de atuação.</p>
+            </div>
+            
+            <div class="glass-card rounded-xl p-6 ambient-glow flex-1 flex flex-col overflow-x-hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-headline-md text-headline-md text-primary-fixed-dim flex items-center gap-2">
+                        <span class="material-symbols-outlined">badge</span> Analistas Cadastrados
+                    </h3>
+                </div>
+                
+                <div *ngIf="isLoading" class="flex justify-center p-8">
+                    <span class="material-symbols-outlined animate-spin text-primary text-3xl">progress_activity</span>
+                </div>
+
+                <div *ngIf="!isLoading && analysts.length === 0" class="text-center p-8 text-on-surface-variant">
+                    Nenhum analista cadastrado ainda.
+                </div>
+
+                <div *ngIf="!isLoading && analysts.length > 0" class="overflow-x-auto rounded-lg border border-outline-variant/30 bg-surface-container-low/50">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-outline-variant/50 text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider bg-surface-container-highest/30">
+                                <th class="py-4 px-6 font-medium">Nome</th>
+                                <th class="py-4 px-6 font-medium">E-mail</th>
+                                <th class="py-4 px-6 font-medium">Cobertura</th>
+                                <th class="py-4 px-6 font-medium">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant/20 font-body-md text-body-md">
+                            <tr *ngFor="let analyst of analysts" class="hover:bg-surface-variant/30 transition-colors group">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-label-md">{{ analyst.name | slice:0:2 | uppercase }}</div>
+                                        <span class="font-medium text-on-surface group-hover:text-primary-fixed transition-colors">{{ analyst.name }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-on-surface-variant">{{ analyst.email }}</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex gap-1 flex-wrap max-w-[200px]">
+                                        <span *ngFor="let state of analyst.coverageStates" class="px-2 py-0.5 rounded-full bg-surface-bright border border-outline-variant/50 text-label-sm font-label-sm text-on-surface">{{ state }}</span>
+                                        <span *ngIf="!analyst.coverageStates || analyst.coverageStates.length === 0" class="text-on-surface-variant text-sm">-</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary-container/20 text-tertiary-fixed font-label-sm text-label-sm border border-tertiary/20">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span> Ativo
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Registration Form Panel -->
+        <div class="lg:col-span-4 flex flex-col">
+            <div class="glass-card rounded-xl p-6 h-full flex flex-col border-t-4 border-t-primary/50 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-[40px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                <div class="mb-6">
+                    <h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">person_add</span> Cadastrar Novo Analista
+                    </h3>
+                </div>
+                
+                <div *ngIf="errorMessage" class="mb-4 p-3 bg-error-container/30 border border-error/50 rounded-lg text-error font-body-md text-sm text-center">
+                    {{ errorMessage }}
+                </div>
+                <div *ngIf="successMessage" class="mb-4 p-3 bg-tertiary-container/30 border border-tertiary/50 rounded-lg text-tertiary font-body-md text-sm text-center">
+                    {{ successMessage }}
+                </div>
+
+                <form [formGroup]="analystForm" class="flex-1 flex flex-col gap-5 font-body-md text-body-md" (ngSubmit)="submitForm()">
+                    <div class="space-y-1.5">
+                        <label class="block font-label-md text-label-md text-on-surface-variant">Nome Completo</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[20px]">person</span>
+                            <input formControlName="name" class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant/40 rounded-lg text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary neumorphic-inset transition-all" 
+                                   [class.border-error]="analystForm.get('name')?.invalid && analystForm.get('name')?.touched"
+                                   placeholder="Ex: Ana Souza" type="text"/>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-1.5">
+                        <label class="block font-label-md text-label-md text-on-surface-variant">E-mail Corporativo</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[20px]">mail</span>
+                            <input formControlName="email" class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant/40 rounded-lg text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary neumorphic-inset transition-all" 
+                                   [class.border-error]="analystForm.get('email')?.invalid && analystForm.get('email')?.touched"
+                                   placeholder="nome@luxeservice.com" type="email"/>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-1.5">
+                        <label class="block font-label-md text-label-md text-on-surface-variant">Senha Temporária</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[20px]">lock</span>
+                            <input formControlName="password" class="w-full pl-10 pr-10 py-3 bg-surface-container-low border border-outline-variant/40 rounded-lg text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary neumorphic-inset transition-all" 
+                                   [class.border-error]="analystForm.get('password')?.invalid && analystForm.get('password')?.touched"
+                                   placeholder="••••••••" type="password"/>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 mt-2">
+                        <label class="block font-label-md text-label-md text-on-surface-variant mb-1">Estados de Cobertura</label>
+                        <div class="flex flex-wrap gap-2 max-h-[120px] overflow-y-auto pr-2 custom-scrollbar">
+                            <label *ngFor="let uf of ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']" class="cursor-pointer relative">
+                                <input class="peer sr-only" type="checkbox" [value]="uf" (change)="toggleUf(uf)" [checked]="selectedUfs.includes(uf)"/>
+                                <div class="px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container text-on-surface-variant font-label-sm text-label-sm peer-checked:bg-primary/20 peer-checked:border-primary peer-checked:text-primary transition-all hover:bg-surface-variant">{{uf}}</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 min-h-[24px]"></div>
+                    
+                    <button [disabled]="analystForm.invalid || isSubmitting" class="w-full py-3.5 px-4 primary-gradient-btn rounded-lg font-label-md text-label-md text-on-primary-fixed flex items-center justify-center gap-2 shadow-lg disabled:opacity-50" type="submit">
+                        <span *ngIf="!isSubmitting">Cadastrar Analista</span>
+                        <span *ngIf="isSubmitting" class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+                        <span *ngIf="!isSubmitting" class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

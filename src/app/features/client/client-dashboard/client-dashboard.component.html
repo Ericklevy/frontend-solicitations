@@ -1,0 +1,186 @@
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full w-64 bg-surface dark:bg-surface border-r border-outline-variant backdrop-blur-xl bg-surface/80 border-r border-white/10 shadow-2xl shadow-primary/20 z-50">
+    <div class="p-gutter flex flex-col items-center justify-center border-b border-white/5">
+        <div class="w-16 h-16 rounded-full overflow-hidden mb-stack-sm ring-2 ring-primary/30 flex items-center justify-center bg-primary-container text-on-primary-container">
+            <span class="material-symbols-outlined text-3xl">person</span>
+        </div>
+        <h1 class="font-headline-md text-headline-md font-bold text-primary">LuxeService</h1>
+        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Cliente Premium</span>
+    </div>
+    <nav class="flex-1 px-4 py-stack-lg space-y-2 overflow-y-auto font-body-md text-body-md font-label-md text-label-md">
+        <a routerLink="/cliente/painel" routerLinkActive="bg-secondary-container text-on-secondary-container" [routerLinkActiveOptions]="{exact: true}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold hover:bg-surface-container-high transition-all duration-300 scale-95 active:scale-90 transition-transform cursor-pointer">
+            <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            <span>Painel</span>
+        </a>
+        <a routerLink="/cliente/nova-solicitacao" routerLinkActive="bg-secondary-container text-on-secondary-container" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-300 scale-95 active:scale-90 transition-transform cursor-pointer">
+            <span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+            <span>Nova Solicitação</span>
+        </a>
+        <a routerLink="/cliente/perfil" routerLinkActive="bg-secondary-container text-on-secondary-container" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-300 scale-95 active:scale-90 transition-transform cursor-pointer">
+            <span class="material-symbols-outlined" data-icon="person">person</span>
+            <span>Meu Perfil</span>
+        </a>
+        
+        <a (click)="logout()" class="cursor-pointer flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-error transition-colors hover:bg-error-container/20 transition-all duration-300 rounded-xl scale-95 active:scale-90 transition-transform mt-8 border border-transparent hover:border-error/30">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">logout</span>
+            Sair
+        </a>
+    </nav>
+</aside>
+    
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-w-0 md:ml-64 relative z-10">
+    <!-- TopNavBar -->
+    <header class="flex justify-between items-center w-full px-gutter h-20 sticky top-0 z-40 bg-surface/60 dark:bg-surface/60 backdrop-blur-2xl shadow-sm text-primary dark:text-primary font-label-md text-label-md">
+        <div class="md:hidden flex items-center gap-3">
+            <h2 class="font-headline-md text-headline-md font-black text-primary">LuxeService</h2>
+        </div>
+        <div class="hidden md:flex flex-1 max-w-md focus-within:ring-2 focus-within:ring-primary/50 rounded-full transition-all">
+            <div class="w-full relative input-inset rounded-full flex items-center px-4 py-2">
+                <span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+                <input [(ngModel)]="searchQuery" (input)="onSearchChange()" class="bg-transparent border-none outline-none text-on-surface placeholder-on-surface-variant w-full font-body-md text-body-md focus:ring-0" placeholder="Buscar solicitações..." type="text"/>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 ml-auto">
+            <button aria-label="Notifications" class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest/50 rounded-full p-2 transition-all">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Main Canvas -->
+    <main class="flex-1 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full">
+        <!-- Section Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-stack-lg gap-4">
+            <div>
+                <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-on-surface">Minhas Solicitações</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant mt-2">Acompanhe o status dos seus serviços premium.</p>
+            </div>
+            <a href="/cliente/nova-solicitacao" class="bg-primary text-on-primary px-6 py-3 rounded-lg font-label-md text-label-md font-semibold hover:bg-primary-fixed transition-colors shadow-lg shadow-primary/20 flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px]">add</span>
+                Nova Solicitação
+            </a>
+        </div>
+    
+        <!-- Quick Filters -->
+        <div class="flex overflow-x-auto pb-4 mb-stack-lg gap-3 scrollbar-hide">
+            <button (click)="setFilter('ALL')" [ngClass]="currentFilter === 'ALL' ? 'border-primary/50 text-primary' : 'text-on-surface-variant hover:text-on-surface border-transparent'" class="px-5 py-2 rounded-full glass-panel text-on-surface font-label-md text-label-md border whitespace-nowrap transition-colors">Todas</button>
+            <button (click)="setFilter('IN_REVIEW')" [ngClass]="currentFilter === 'IN_REVIEW' ? 'border-primary/50 text-primary' : 'text-on-surface-variant hover:text-on-surface border-transparent'" class="px-5 py-2 rounded-full glass-panel font-label-md text-label-md border whitespace-nowrap transition-colors">Em Análise</button>
+            <button (click)="setFilter('APPROVED')" [ngClass]="currentFilter === 'APPROVED' ? 'border-primary/50 text-primary' : 'text-on-surface-variant hover:text-on-surface border-transparent'" class="px-5 py-2 rounded-full glass-panel font-label-md text-label-md border whitespace-nowrap transition-colors">Aprovadas</button>
+        </div>
+    
+        <div *ngIf="isLoading" class="flex justify-center py-10">
+            <span class="material-symbols-outlined animate-spin text-primary text-4xl">progress_activity</span>
+        </div>
+
+        <div *ngIf="!isLoading && filteredSolicitations.length === 0" class="flex flex-col items-center justify-center py-20 text-on-surface-variant">
+            <span class="material-symbols-outlined text-6xl mb-4 opacity-50">inbox</span>
+            <p class="font-body-lg">Nenhuma solicitação encontrada.</p>
+        </div>
+
+        <!-- Bento Grid / Cards -->
+        <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div *ngFor="let s of filteredSolicitations" class="glass-panel rounded-xl p-6 flex flex-col relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                <div class="absolute top-0 left-0 w-1/2 h-1 bg-gradient-to-r opacity-50"
+                     [ngClass]="{
+                         'from-tertiary-container': s.status === 'APPROVED',
+                         'from-error-container': s.status === 'REJECTED',
+                         'from-primary-container': s.status === 'SUBMITTED' || s.status === 'IN_REVIEW',
+                         'from-surface-variant': s.status === 'DRAFT'
+                     }"></div>
+                <div class="flex justify-between items-start mb-4">
+                    <span class="font-label-sm text-label-sm px-3 py-1 rounded-full border"
+                          [ngClass]="{
+                                'bg-tertiary-container/20 text-tertiary border-tertiary-container/30': s.status === 'APPROVED',
+                                'bg-error-container/20 text-error border-error-container/30': s.status === 'REJECTED',
+                                'bg-primary-container/20 text-primary-container border-primary-container/30': s.status === 'SUBMITTED' || s.status === 'IN_REVIEW',
+                                'bg-surface-variant/20 text-on-surface-variant border-outline-variant/30': s.status === 'DRAFT'
+                          }">
+                        {{ s.status }}
+                    </span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">{{ s.preferredDate || 'Data Indefinida' }}</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-1">{{ s.title || s.serviceType || 'Serviço em Rascunho' }}</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant mb-6 truncate">{{ s.description || 'Sem descrição.' }}</p>
+                <div class="mt-auto flex justify-between items-center border-t border-white/5 pt-4">
+                    <span class="font-label-sm text-label-sm text-outline font-mono" *ngIf="s.id">ID: LX-{{ s.id.substring(0, 4) }}</span>
+                    <button (click)="openDetails(s)" class="text-primary hover:text-primary-fixed-dim font-label-md text-label-md flex items-center gap-1 transition-colors">
+                        Ver Detalhes <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal de Detalhes -->
+<div *ngIf="selectedSolicitation" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-all">
+    <div class="glass-panel w-full max-w-2xl rounded-2xl overflow-hidden flex flex-col shadow-2xl shadow-black relative transform transition-all scale-100">
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-outline-variant/20 flex justify-between items-center bg-surface-container-low/80">
+            <h3 class="font-headline-md text-headline-md font-bold text-on-surface">Detalhes da Solicitação</h3>
+            <button (click)="closeDetails()" class="text-on-surface-variant hover:text-error transition-colors p-1 rounded-full hover:bg-error-container/20">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="p-6 overflow-y-auto max-h-[70vh] space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Serviço</p>
+                    <p class="font-body-md text-body-md text-on-surface bg-surface-container-low p-3 rounded-md border border-outline-variant/10">{{ selectedSolicitation.title || selectedSolicitation.serviceType }}</p>
+                </div>
+                <div>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Status</p>
+                    <p class="font-body-md text-body-md text-on-surface p-3 rounded-md border border-outline-variant/10 font-bold"
+                       [ngClass]="{
+                           'text-tertiary bg-tertiary-container/10 border-tertiary/20': selectedSolicitation.status === 'APPROVED',
+                           'text-error bg-error-container/10 border-error/20': selectedSolicitation.status === 'REJECTED',
+                           'text-primary bg-primary-container/10 border-primary/20': selectedSolicitation.status === 'SUBMITTED' || selectedSolicitation.status === 'IN_REVIEW',
+                           'text-on-surface-variant bg-surface-variant/10 border-outline-variant/20': selectedSolicitation.status === 'DRAFT'
+                       }">
+                        {{ selectedSolicitation.status }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Agendamento</p>
+                    <p class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary/70 text-[18px]">calendar_clock</span> {{ selectedSolicitation.preferredDate || 'N/A' }}
+                    </p>
+                </div>
+                <div>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Endereço</p>
+                    <p class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary/70 text-[18px]">location_on</span> {{ selectedSolicitation.city || 'N/A' }}, {{ selectedSolicitation.state || 'N/A' }}
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Descrição</p>
+                <p class="font-body-md text-body-md text-on-surface/90 leading-relaxed p-4 bg-surface-container-lowest/50 rounded-md inner-shadow border border-outline-variant/10 text-sm">
+                    {{ selectedSolicitation.description || 'Sem descrição detalhada.' }}
+                </p>
+            </div>
+            
+            <div *ngIf="selectedSolicitation.cep">
+                <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Localização Completa</p>
+                <p class="font-body-md text-body-md text-on-surface/90 leading-relaxed p-4 bg-surface-container-lowest/50 rounded-md inner-shadow border border-outline-variant/10 text-sm">
+                    {{ selectedSolicitation.street || '' }}, {{ selectedSolicitation.number || '' }} {{ selectedSolicitation.complement ? '(' + selectedSolicitation.complement + ')' : '' }} - {{ selectedSolicitation.neighborhood || '' }}<br>
+                    CEP: {{ selectedSolicitation.cep || 'N/A' }}
+                </p>
+            </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="px-6 py-4 bg-surface-container-low/90 backdrop-blur-md border-t border-outline-variant/20 flex justify-end">
+            <button (click)="closeDetails()" class="px-6 py-2 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-semibold hover:bg-primary-fixed transition-colors shadow-lg shadow-primary/20">
+                Fechar
+            </button>
+        </div>
+    </div>
+</div>

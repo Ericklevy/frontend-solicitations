@@ -1,0 +1,74 @@
+
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 border-r border-outline-variant dark:border-outline-variant backdrop-blur-xl bg-surface-container dark:bg-surface-container shadow-md z-50 py-base">
+    <div class="px-6 mb-8 mt-8 flex flex-col items-center justify-center w-full text-center border-b border-outline-variant/30 pb-6">
+        <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-tight">LuxeService</h1>
+        <p class="text-[10px] text-on-surface-variant uppercase tracking-[0.2em] mt-1 font-bold">Portal Administrativo</p>
+    </div>
+    
+    <div class="flex-1 px-3 space-y-1 mt-4">
+        <a routerLink="/admin/painel" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" [routerLinkActiveOptions]="{exact: true}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-bold hover:bg-surface-variant/50 transition-colors cursor-pointer font-body-md text-body-md">
+            <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            <span>Painel</span>
+        </a>
+        <a routerLink="/admin/equipe" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-bold hover:bg-surface-variant/50 transition-colors cursor-pointer font-body-md text-body-md">
+            <span class="material-symbols-outlined" data-icon="groups">groups</span>
+            <span>Equipe</span>
+        </a>
+        <a routerLink="/admin/relatorios" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-bold hover:bg-surface-variant/50 transition-colors cursor-pointer font-body-md text-body-md">
+            <span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+            <span>Relatórios</span>
+        </a>
+        <a routerLink="/admin/servicos" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-bold hover:bg-surface-variant/50 transition-colors cursor-pointer font-body-md text-body-md">
+            <span class="material-symbols-outlined" data-icon="design_services">design_services</span>
+            <span>Serviços</span>
+        </a>
+        <a routerLink="/admin/configuracoes" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-bold hover:bg-surface-variant/50 transition-colors cursor-pointer font-body-md text-body-md">
+            <span class="material-symbols-outlined" data-icon="settings">settings</span>
+            <span>Configurações</span>
+        </a>
+    </div>
+    
+    <div class="px-3 mt-auto space-y-4">
+        <div class="space-y-1 pt-4 border-t border-outline-variant/30">
+            <a routerLink="/admin/suporte" routerLinkActive="bg-primary/10 text-primary border-r-2 border-primary" class="cursor-pointer flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-colors font-body-md text-body-md">
+                <span class="material-symbols-outlined" data-icon="help">help</span>
+                <span>Suporte</span>
+            </a>
+            <a href="/auth" class="cursor-pointer flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-colors font-body-md text-body-md mt-1">
+                <span class="material-symbols-outlined" data-icon="logout">logout</span>
+                <span>Sair</span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<header class="hidden md:flex fixed top-0 right-0 left-64 h-16 justify-between items-center px-margin-desktop z-40 bg-background/80 dark:bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 transition-all font-label-md text-label-md text-primary dark:text-primary">
+    <div class="flex items-center gap-4">
+        <div class="relative focus-within:ring-2 focus-within:ring-primary rounded-full transition-all">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+            <input class="pl-10 pr-4 py-2 bg-surface-container-high border-none rounded-full text-on-surface placeholder:text-on-surface-variant focus:outline-none w-64 text-sm neumorphic-inset transition-all outline-none" placeholder="Buscar..." type="text"/>
+        </div>
+    </div>
+    <div class="font-headline-sm text-headline-sm font-black text-on-surface dark:text-on-surface absolute left-1/2 -translate-x-1/2">
+        LuxeService Admin
+    </div>
+    <div class="flex items-center gap-4">
+        <button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all">
+            <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+        </button>
+    </div>
+</header>
+
+<main class="md:pl-64 pt-16 min-h-screen">
+    <div class="max-w-[1280px] mx-auto p-margin-mobile md:p-margin-desktop">
+        <div class="mb-stack-sm">
+            <h2 class="font-headline-lg text-headline-lg md:text-headline-lg text-on-surface mb-2">Suporte Técnico</h2>
+            <p class="font-body-lg text-body-lg text-on-surface-variant">Tickets abertos por clientes e analistas.</p>
+        </div>
+        <div class="glass-card rounded-xl p-8 ambient-glow text-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-4xl block mb-2 text-outline">help</span>
+        Nenhum ticket aberto no momento.
+    </div>
+    </div>
+</main>

@@ -1,0 +1,207 @@
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full bg-surface/10 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_32px_0_rgba(184,195,255,0.1)] flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 z-50">
+    <div class="flex items-center gap-4">
+        <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">LuxeService</span>
+    </div>
+    <div class="flex items-center gap-4">
+        <button class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 active:scale-95 flex items-center gap-2">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">help</span>
+            <span class="hidden md:inline font-label-md text-label-md">Suporte</span>
+        </button>
+        <a href="/cliente/painel" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 active:scale-95 flex items-center gap-2">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">close</span>
+        </a>
+    </div>
+</header>
+    
+<!-- Main Content -->
+<main class="flex-grow pt-24 pb-stack-lg px-margin-mobile md:px-margin-desktop flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-3xl">
+        <!-- Header Section -->
+        <div class="text-center mb-stack-lg">
+            <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-stack-sm">Nova Solicitação</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant">Configure os detalhes do serviço desejado.</p>
+        </div>
+    
+        <div *ngIf="errorMessage" class="mb-4 p-3 bg-error-container/30 border border-error/50 rounded-lg text-error font-body-md text-sm text-center">
+            {{ errorMessage }}
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="mb-stack-lg px-4">
+            <div class="flex justify-between items-center relative">
+                <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-surface-container-high rounded-full z-0"></div>
+                <div class="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-primary rounded-full z-0 transition-all duration-500 ease-in-out" 
+                     [style.width.%]="progressPercentage"></div>
+    
+                <ng-container *ngFor="let stepNum of [1,2,3]">
+                    <div class="relative z-10 flex flex-col items-center gap-2">
+                        <div *ngIf="stepNum < currentStep" class="w-10 h-10 rounded-full flex items-center justify-center font-label-md text-label-md transition-colors duration-300 bg-primary/20 text-primary border border-primary">
+                            <span class="material-symbols-outlined" style="font-size: 18px;">check</span>
+                        </div>
+                        <div *ngIf="stepNum === currentStep" class="w-10 h-10 rounded-full flex items-center justify-center font-label-md text-label-md transition-colors duration-300 bg-primary text-on-primary shadow-[0_0_15px_rgba(184,195,255,0.4)]">
+                            {{stepNum}}
+                        </div>
+                        <div *ngIf="stepNum > currentStep" class="w-10 h-10 rounded-full flex items-center justify-center font-label-md text-label-md transition-colors duration-300 bg-surface-container-high text-on-surface-variant border border-outline-variant">
+                            {{stepNum}}
+                        </div>
+                        <span class="font-label-sm text-label-sm hidden md:block absolute top-12 whitespace-nowrap"
+                              [ngClass]="stepNum <= currentStep ? 'text-primary' : 'text-on-surface-variant'">
+                            {{stepNum === 1 ? 'Detalhes' : stepNum === 2 ? 'Localização' : 'Agendamento'}}
+                        </span>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    
+        <!-- Wizard Card -->
+        <div class="glass-card rounded-xl p-stack-md md:p-stack-lg relative overflow-hidden mt-stack-md">
+            <div class="absolute -top-32 -right-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <!-- STEP 1 -->
+            <form *ngIf="currentStep === 1" [formGroup]="step1Form" class="fade-in" (submit)="$event.preventDefault();">
+                <h2 class="font-headline-md text-headline-md text-on-surface mb-stack-md flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">design_services</span> Detalhes do Serviço
+                </h2>
+                <div class="flex flex-col gap-gutter">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-label-md text-label-md text-on-surface-variant">Tipo de Serviço</label>
+                        <div class="relative">
+                            <select formControlName="serviceType" class="glass-input w-full rounded-lg px-4 py-3 appearance-none font-body-md text-body-md"
+                                    [class.border-error]="step1Form.get('serviceType')?.invalid && step1Form.get('serviceType')?.touched">
+                                <option disabled selected value="">Selecione uma categoria</option>
+                                <option value="INSTALLATION">Instalação</option>
+                                <option value="MAINTENANCE">Manutenção</option>
+                                <option value="REPAIR">Reparo</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-label-md text-label-md text-on-surface-variant">Título da Solicitação</label>
+                        <input formControlName="title" class="glass-input w-full rounded-lg px-4 py-3 font-body-md text-body-md" 
+                               [class.border-error]="step1Form.get('title')?.invalid && step1Form.get('title')?.touched"
+                               placeholder="Ex: Recepção VIP Aeroporto Internacional" type="text"/>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-label-md text-label-md text-on-surface-variant">Descrição Detalhada</label>
+                        <textarea formControlName="description" class="glass-input w-full rounded-lg px-4 py-3 font-body-md text-body-md resize-none" 
+                                  [class.border-error]="step1Form.get('description')?.invalid && step1Form.get('description')?.touched"
+                                  placeholder="Descreva as especificidades..." rows="4"></textarea>
+                    </div>
+                </div>
+            </form>
+
+            <!-- STEP 2 -->
+            <form *ngIf="currentStep === 2" [formGroup]="step2Form" class="fade-in" (submit)="$event.preventDefault();">
+                <h2 class="font-headline-md text-headline-md text-on-surface mb-stack-md flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">location_on</span> Localização
+                </h2>
+                <div class="flex flex-col gap-gutter">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-label-md text-label-md text-on-surface-variant">CEP (Apenas números)</label>
+                        <div class="relative">
+                            <input formControlName="cep" class="glass-input w-full md:w-1/2 rounded-lg px-4 py-3 font-body-md text-body-md" 
+                                   [class.border-error]="step2Form.get('cep')?.invalid && step2Form.get('cep')?.touched"
+                                   placeholder="01001000" type="text" maxlength="8"/>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-md text-on-surface-variant">Número</label>
+                            <input formControlName="number" class="glass-input w-full rounded-lg px-4 py-3 font-body-md text-body-md" 
+                                   [class.border-error]="step2Form.get('number')?.invalid && step2Form.get('number')?.touched"
+                                   placeholder="100" type="text"/>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-md text-on-surface-variant">Complemento</label>
+                            <input formControlName="complement" class="glass-input w-full rounded-lg px-4 py-3 font-body-md text-body-md" placeholder="Apto 42" type="text"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- STEP 3 -->
+            <form *ngIf="currentStep === 3" [formGroup]="step3Form" class="fade-in" (submit)="$event.preventDefault();">
+                <h2 class="font-headline-md text-headline-md text-on-surface mb-stack-md flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">calendar_month</span> Agendamento e Orçamento
+                </h2>
+                <div class="flex flex-col gap-gutter">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-label-md text-label-md text-on-surface-variant">Prioridade</label>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <label class="cursor-pointer relative">
+                                <input formControlName="priority" class="peer sr-only" type="radio" value="LOW"/>
+                                <div class="glass-card rounded-lg p-4 flex flex-col items-center gap-2 border peer-checked:border-primary peer-checked:bg-primary/10 transition-all hover:bg-surface-container-high/50">
+                                    <span class="material-symbols-outlined text-on-surface-variant peer-checked:text-primary">schedule</span>
+                                    <span class="font-label-md text-label-md text-on-surface">Baixa</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative">
+                                <input formControlName="priority" class="peer sr-only" type="radio" value="MEDIUM"/>
+                                <div class="glass-card rounded-lg p-4 flex flex-col items-center gap-2 border peer-checked:border-primary peer-checked:bg-primary/10 transition-all hover:bg-surface-container-high/50">
+                                    <span class="material-symbols-outlined text-tertiary peer-checked:text-primary">flash_on</span>
+                                    <span class="font-label-md text-label-md text-on-surface">Média</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative">
+                                <input formControlName="priority" class="peer sr-only" type="radio" value="HIGH"/>
+                                <div class="glass-card rounded-lg p-4 flex flex-col items-center gap-2 border peer-checked:border-error peer-checked:bg-error/10 transition-all hover:bg-surface-container-high/50">
+                                    <span class="material-symbols-outlined text-error">emergency</span>
+                                    <span class="font-label-md text-label-md text-error">Alta</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-md text-on-surface-variant">Data Preferencial</label>
+                            <input formControlName="preferredDate" class="glass-input w-full rounded-lg px-4 py-3 font-body-md text-body-md [color-scheme:dark]" 
+                                   [class.border-error]="step3Form.get('preferredDate')?.invalid && step3Form.get('preferredDate')?.touched"
+                                   type="date"/>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-label-md text-label-md text-on-surface-variant">Valor Estimado</label>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-4 font-body-md text-body-md text-on-surface-variant">R$</span>
+                                <input formControlName="estimatedValue" class="glass-input w-full rounded-lg pl-12 pr-4 py-3 font-body-md text-body-md" placeholder="0.00" type="number" step="0.01"/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input formControlName="termsAccepted" type="checkbox" class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary bg-surface-container">
+                            <span class="font-body-sm text-body-sm text-on-surface-variant">
+                                Declaro que as informações acima são verdadeiras e aceito os termos do serviço.
+                            </span>
+                        </label>
+                        <span *ngIf="step3Form.get('termsAccepted')?.invalid && step3Form.get('termsAccepted')?.touched" class="text-error text-xs block mt-1">
+                            Você precisa aceitar os termos para prosseguir.
+                        </span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Navigation Buttons -->
+            <div class="mt-stack-lg pt-stack-md border-t border-white/5 flex justify-between items-center">
+                <button [ngClass]="currentStep === 1 ? 'invisible' : ''" (click)="prevStep()" class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface px-6 py-3 rounded-lg border border-outline-variant hover:border-outline hover:bg-surface-container-high transition-all flex items-center gap-2" type="button">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span> Voltar
+                </button>
+                
+                <button *ngIf="currentStep < totalSteps" (click)="nextStep()" [disabled]="isProcessing" class="font-label-md text-label-md text-on-primary-container bg-gradient-to-r from-primary-container to-inverse-primary hover:opacity-90 px-8 py-3 rounded-lg shadow-[0_0_20px_rgba(46,91,255,0.4)] transition-all flex items-center gap-2 active:scale-95 disabled:opacity-50" type="button">
+                    <span *ngIf="isProcessing" class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+                    <span *ngIf="!isProcessing">Próximo Passo</span>
+                    <span *ngIf="!isProcessing" class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+                </button>
+                
+                <button *ngIf="currentStep === totalSteps" (click)="nextStep()" [disabled]="isProcessing" class="font-label-md text-label-md text-on-primary bg-primary hover:bg-primary-fixed-dim px-8 py-3 rounded-lg shadow-[0_0_20px_rgba(184,195,255,0.4)] transition-all flex items-center gap-2 active:scale-95 disabled:opacity-50" type="button">
+                    <span *ngIf="!isProcessing">Concluir Solicitação <span class="material-symbols-outlined" style="font-size: 18px;">check</span></span>
+                    <span *ngIf="isProcessing" class="flex items-center gap-2">
+                        <span class="material-symbols-outlined animate-spin" style="font-size: 18px;">progress_activity</span> Processando...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
