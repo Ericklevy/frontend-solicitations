@@ -87,7 +87,10 @@
                         <label class="font-label-md text-label-md text-on-surface-variant">Descrição Detalhada</label>
                         <textarea formControlName="description" class="glass-input w-full rounded-lg px-4 py-3 font-body-md text-body-md resize-none" 
                                   [class.border-error]="step1Form.get('description')?.invalid && step1Form.get('description')?.touched"
-                                  placeholder="Descreva as especificidades..." rows="4"></textarea>
+                                  placeholder="Descreva as especificidades (mínimo de 20 caracteres)..." rows="4"></textarea>
+                        <span *ngIf="step1Form.get('description')?.errors?.['minlength'] && step1Form.get('description')?.touched" class="text-error text-xs">
+                            A descrição deve ter pelo menos 20 caracteres.
+                        </span>
                     </div>
                 </div>
             </form>
@@ -158,6 +161,7 @@
                             <label class="font-label-md text-label-md text-on-surface-variant">Data Preferencial</label>
                             <input formControlName="preferredDate" class="glass-input w-full rounded-lg px-4 py-3 font-body-md text-body-md [color-scheme:dark]" 
                                    [class.border-error]="step3Form.get('preferredDate')?.invalid && step3Form.get('preferredDate')?.touched"
+                                   [min]="today"
                                    type="date"/>
                         </div>
                         <div class="flex flex-col gap-2">

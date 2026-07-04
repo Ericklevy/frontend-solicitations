@@ -18,6 +18,7 @@ export class SolicitationWizardComponent implements OnInit {
   isProcessing = false;
   draftId: string | null = null;
   errorMessage = '';
+  today = new Date().toISOString().split('T')[0];
 
   private fb = inject(FormBuilder);
   private solicitationService = inject(SolicitationService);
@@ -25,8 +26,8 @@ export class SolicitationWizardComponent implements OnInit {
 
   step1Form: FormGroup = this.fb.group({
     serviceType: ['', Validators.required],
-    title: ['', Validators.required],
-    description: ['', Validators.required]
+    title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
+    description: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(1000)]]
   });
 
   step2Form: FormGroup = this.fb.group({
