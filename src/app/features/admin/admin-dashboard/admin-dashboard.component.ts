@@ -78,7 +78,12 @@ export class AdminDashboardComponent implements OnInit {
     this.adminService.createAnalyst(payload).subscribe({
       next: (createdUser) => {
         if (this.selectedUfs.length > 0 && createdUser && createdUser.id) {
-          this.adminService.updateAnalystCoverage(createdUser.id, { coverageStates: this.selectedUfs }).subscribe({
+          const coveragePayload = { 
+            coverageStates: this.selectedUfs,
+            states: this.selectedUfs // Sending both in case backend expects 'states' instead of 'coverageStates'
+          } as any;
+          
+          this.adminService.updateAnalystCoverage(createdUser.id, coveragePayload).subscribe({
             next: () => {
               this.isSubmitting = false;
               Swal.fire('Sucesso!', 'Analista e cobertura cadastrados com sucesso!', 'success');
