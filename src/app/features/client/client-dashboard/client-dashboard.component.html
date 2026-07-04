@@ -162,6 +162,33 @@
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Categoria de Serviço</p>
+                    <p class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary/70 text-[18px]">design_services</span>
+                        {{ selectedSolicitation.serviceType === 'INSTALLATION' ? 'Instalação' : 
+                           selectedSolicitation.serviceType === 'MAINTENANCE' ? 'Manutenção' : 
+                           selectedSolicitation.serviceType === 'INSPECTION' ? 'Inspeção' : (selectedSolicitation.serviceType || 'N/A') }}
+                    </p>
+                </div>
+                <div>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Prioridade / Valor</p>
+                    <p class="font-body-md text-body-md text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]" 
+                              [ngClass]="{'text-error': selectedSolicitation.priority === 'HIGH', 'text-tertiary': selectedSolicitation.priority === 'MEDIUM', 'text-on-surface-variant': selectedSolicitation.priority === 'LOW'}">
+                              {{ selectedSolicitation.priority === 'HIGH' ? 'emergency' : selectedSolicitation.priority === 'MEDIUM' ? 'flash_on' : 'schedule' }}
+                        </span>
+                        <span [ngClass]="{'text-error font-bold': selectedSolicitation.priority === 'HIGH'}">
+                            {{ selectedSolicitation.priority === 'HIGH' ? 'Alta' : selectedSolicitation.priority === 'MEDIUM' ? 'Média' : (selectedSolicitation.priority === 'LOW' ? 'Baixa' : 'N/A') }}
+                        </span>
+                        <span class="text-on-surface-variant ml-2 border-l border-outline-variant/30 pl-2" *ngIf="selectedSolicitation.estimatedValue !== null && selectedSolicitation.estimatedValue !== undefined">
+                            R$ {{ selectedSolicitation.estimatedValue.toFixed(2) }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+
             <div>
                 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Descrição</p>
                 <p class="font-body-md text-body-md text-on-surface/90 leading-relaxed p-4 bg-surface-container-lowest/50 rounded-md inner-shadow border border-outline-variant/10 text-sm">
