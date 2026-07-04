@@ -69,18 +69,38 @@ export class AdminDashboardComponent implements OnInit {
     this.successMessage = '';
 
     const payload = {
-      ...this.analystForm.value,
-      role: 'ANALYST',
-      coverageStates: this.selectedUfs
+      name: this.analystForm.value.name,
+      email: this.analystForm.value.email,
+      password: this.analystForm.value.password,
+      role: 'ANALYST'
     };
 
     this.adminService.createAnalyst(payload).subscribe({
-      next: () => {
-        this.isSubmitting = false;
-        Swal.fire('Sucesso!', 'Analista cadastrado com sucesso!', 'success');
-        this.analystForm.reset();
-        this.selectedUfs = [];
-        this.loadAnalysts(); // recarrega a lista
+      next: (createdUser) => {
+        if (this.selectedUfs.length > 0 && createdUser && createdUser.id) {
+          this.adminService.updateAnalystCoverage(createdUser.id, { coverageStates: this.selectedUfs }).subscribe({
+            next: () => {
+              this.isSubmitting = false;
+              Swal.fire('Sucesso!', 'Analista e cobertura cadastrados com sucesso!', 'success');
+              this.analystForm.reset();
+              this.selectedUfs = [];
+              this.loadAnalysts();
+            },
+            error: (err) => {
+              this.isSubmitting = false;
+              Swal.fire('Aviso', 'Analista criado, mas houve erro ao definir os estados de cobertura.', 'warning');
+              this.analystForm.reset();
+              this.selectedUfs = [];
+              this.loadAnalysts();
+            }
+          });
+        } else {
+          this.isSubmitting = false;
+          Swal.fire('Sucesso!', 'Analista cadastrado com sucesso!', 'success');
+          this.analystForm.reset();
+          this.selectedUfs = [];
+          this.loadAnalysts();
+        }
       },
       error: (err) => {
         this.isSubmitting = false;

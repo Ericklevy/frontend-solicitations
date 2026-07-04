@@ -13,11 +13,11 @@ export class AdminService {
 
   constructor(private http: HttpClient) { }
 
-  createAnalyst(user: User): Observable<User> {
+  createAnalyst(user: any): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/users`, user);
   }
 
-  updateAnalystCoverage(id: number, coverage: CoverageUpdateDTO): Observable<User> {
+  updateAnalystCoverage(id: string, coverage: CoverageUpdateDTO): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/users/${id}/coverage`, coverage);
   }
 
