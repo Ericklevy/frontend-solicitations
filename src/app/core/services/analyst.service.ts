@@ -15,7 +15,10 @@ export class AnalystService {
   constructor(private http: HttpClient) {}
 
   search(query?: string): Observable<Solicitation[]> {
-    let params = new HttpParams();
+    let params = new HttpParams()
+      .set('status', 'SUBMITTED')
+      .append('status', 'IN_REVIEW');
+      
     if (query) {
       params = params.set('q', query);
     }
