@@ -1,7 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { SolicitationService } from '../../../core/services/solicitation.service';
 import Swal from 'sweetalert2';
 
@@ -23,6 +24,7 @@ export class SolicitationWizardComponent implements OnInit {
   private fb = inject(FormBuilder);
   private solicitationService = inject(SolicitationService);
   private router = inject(Router);
+  private http = inject(HttpClient);
 
   step1Form: FormGroup = this.fb.group({
     serviceType: ['', Validators.required],
@@ -33,7 +35,11 @@ export class SolicitationWizardComponent implements OnInit {
   step2Form: FormGroup = this.fb.group({
     cep: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
     number: ['', Validators.required],
-    complement: ['']
+    complement: [''],
+    street: [{value: '', disabled: true}],
+    neighborhood: [{value: '', disabled: true}],
+    city: [{value: '', disabled: true}],
+    state: [{value: '', disabled: true}]
   });
 
   step3Form: FormGroup = this.fb.group({
@@ -41,7 +47,16 @@ export class SolicitationWizardComponent implements OnInit {
     preferredDate: ['', Validators.required],
     estimatedValue: [0, Validators.min(0)],
     termsAccepted: [false, Validators.requiredTrue]
-  });
+  }, { validators: this.priorityValueValidator });
+
+  priorityValueValidator(control: AbstractControl): ValidationErrors | null {
+    const priority = control.get('priority')?.value;
+    const value = control.get('estimatedValue')?.value;
+    if (priority === 'HIGH' && (value === null || value < 100)) {
+      return { priorityHighValueMismatch: true };
+    }
+    return null;
+  }
 
   ngOnInit(): void {
     // Inicializa o rascunho assim que a tela abre
@@ -83,7 +98,14 @@ export class SolicitationWizardComponent implements OnInit {
         this.isProcessing = false;
         return;
       }
-      this.solicitationService.saveStep2(this.draftId, this.step2Form.value).subscribe({
+      
+      // Ensure street and city were fetched
+      if (!this.step2Form.getRawValue().street) {
+        this.handleError('Por favor, informe um CEP válido para preencher o endereço.');
+        return;
+      }
+
+      this.solicitationService.saveStep2(this.draftId, this.step2Form.getRawValue()).subscribe({
         next: () => {
           this.currentStep++;
           this.isProcessing = false;
@@ -117,6 +139,48 @@ export class SolicitationWizardComponent implements OnInit {
     if (this.currentStep > 1) {
       this.currentStep--;
     }
+  }
+
+  onCepChange() {
+    const cepVal = this.step2Form.get('cep')?.value;
+    const cleanCep = cepVal?.replace(/\D/g, '');
+    if (cleanCep && cleanCep.length === 8) {
+      this.step2Form.get('street')?.setValue('Buscando...');
+      this.step2Form.get('neighborhood')?.setValue('Buscando...');
+      this.step2Form.get('city')?.setValue('Buscando...');
+      this.step2Form.get('state')?.setValue('...');
+      
+      this.http.get<any>(`https://viacep.com.br/ws/${cleanCep}/json/`).subscribe({
+        next: (data) => {
+          if (data.erro) {
+            this.handleError('CEP não encontrado.');
+            this.clearAddress();
+          } else {
+            this.step2Form.patchValue({
+              street: data.logradouro,
+              neighborhood: data.bairro,
+              city: data.localidade,
+              state: data.uf
+            });
+          }
+        },
+        error: () => {
+          this.handleError('Erro ao buscar o CEP.');
+          this.clearAddress();
+        }
+      });
+    } else {
+      this.clearAddress();
+    }
+  }
+
+  private clearAddress() {
+    this.step2Form.patchValue({
+      street: '',
+      neighborhood: '',
+      city: '',
+      state: ''
+    });
   }
 
   get progressPercentage() {

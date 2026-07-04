@@ -22,7 +22,20 @@ export class AnalystDashboardComponent implements OnInit {
   isLoading = false;
   isProcessing = false;
   comment = '';
+  
+  // Filters and Pagination
   searchQuery = '';
+  selectedStatuses: string[] = ['SUBMITTED', 'IN_REVIEW'];
+  selectedServiceType = '';
+  selectedPriority = '';
+  dateFrom = '';
+  dateTo = '';
+  
+  currentPage = 0;
+  pageSize = 10;
+  totalElements = 0;
+  
+  showAdvancedFilters = false;
 
   private analystService = inject(AnalystService);
   private authService = inject(AuthService);
@@ -33,19 +46,62 @@ export class AnalystDashboardComponent implements OnInit {
 
   loadSolicitations() {
     this.isLoading = true;
-    this.analystService.search(this.searchQuery).subscribe({
+    
+    const filters = {
+      q: this.searchQuery,
+      status: this.selectedStatuses,
+      serviceType: this.selectedServiceType,
+      priority: this.selectedPriority,
+      dateFrom: this.dateFrom,
+      dateTo: this.dateTo,
+      page: this.currentPage,
+      size: this.pageSize
+    };
+
+    this.analystService.search(filters).subscribe({
       next: (data) => {
-        this.solicitations = data;
+        this.solicitations = data.items;
+        this.totalElements = data.total;
+        this.currentPage = data.page;
         this.isLoading = false;
       },
       error: () => {
         this.isLoading = false;
+        this.solicitations = [];
       }
     });
   }
 
   onSearchChange() {
+    this.currentPage = 0;
     this.loadSolicitations();
+  }
+
+  onFilterChange() {
+    this.currentPage = 0;
+    this.loadSolicitations();
+  }
+
+  toggleAdvancedFilters() {
+    this.showAdvancedFilters = !this.showAdvancedFilters;
+  }
+
+  nextPage() {
+    if ((this.currentPage + 1) * this.pageSize < this.totalElements) {
+      this.currentPage++;
+      this.loadSolicitations();
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.loadSolicitations();
+    }
+  }
+  
+  get totalPages() {
+    return Math.ceil(this.totalElements / this.pageSize);
   }
 
   selectRow(solicitation: Solicitation) {
